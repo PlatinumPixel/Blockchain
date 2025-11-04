@@ -4,6 +4,7 @@
 
 #include "std.h"
 #include "Timer.h"
+#include "user.h"
 
 string hashing(string& );
 void spausdina(vector <string> ,vector <string> );
