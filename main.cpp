@@ -9,13 +9,14 @@ int main(){
     vector <User> users = GeneruotiUsers(1000);
 
     printUsers(users, 50);
-    vector <Transaction> transactions = GeneruotiTransactions(users, 100);
-
-    printTransactions(transactions);
+    vector <Transaction> transactions = GeneruotiTransactions(users,10000);
+    printTransactions(transactions, 100);
 
     Blockchain blockchain;
-
+    long limit = 500000;
+    int abort = 0;
     while (!transactions.empty()){
+        int chainsize = blockchain.size();
         int kiekis = std::min(100, int(transactions.size()));
         vector<Transaction> blockTransactions(transactions.begin(), transactions.begin() + kiekis);
         string previousHash = blockchain.getLatestBlock().getHash();
@@ -28,42 +29,62 @@ int main(){
 
         transactionhash = hashing(transactionhash);
 
-        float version = 1.0f;
-        std::uint64_t nonce = 0;
-        std::uint64_t foundNonce = 0;
+        float version = 1.0;
+        long nonce = 0;
+        long foundNonce = 0;
         string hash;
 
-        // Build the header without nonce once; we'll append the nonce digits into a reusable buffer
         string headerNonceless = previousHash + std::to_string(std::time(nullptr)) + std::to_string(version) + transactionhash + std::to_string(difficulty);
-        string trial = headerNonceless;
-        trial.reserve(headerNonceless.size() + 32); // enough space for nonce digits
+
 
         // Try nonces until we find a hash that starts with the required number of '0' hex chars
         while (true) {
-            trial.resize(headerNonceless.size());
-            char buf[32];
-            auto res = std::to_chars(buf, buf + sizeof(buf), nonce);
-            trial.append(buf, res.ptr - buf);
+            hash = hashing(headerNonceless + std::to_string(nonce));
 
-            hash = hashing(trial);
-
-            if (hash.size() >= (size_t)difficulty && hash.substr(0, difficulty) == string(difficulty, '0')) {
+            if (hash.substr(0, difficulty) == string(difficulty, '0')) {
                 foundNonce = nonce;
                 break;
             }
-
-            // Print progress occasionally (every 4096 iterations) to avoid slowing the loop
-            if ((nonce & 0xFFF) == 0) {
-                cout << "\r" << "Mining block... Nonce: " << nonce << " Hash: " << hash << std::flush;
+            if (nonce % 100000 == 0) cout << "\r" << "Mining block... Nonce: " << nonce << " Hash: " << hash << std::flush;
+            if (nonce > limit){
+                cout << endl << "Mining aborted after 500,000 nonces. Taking new transactions" << endl;
+                break;
             }
-
             ++nonce;
+        }   
+        if (nonce > limit){
+            vector<Transaction> blockTransactions(transactions.end()-kiekis, transactions.end());
+            abort++;
+            if (abort >= 5){
+                cout << "Multiple mining aborts. Increasing limit." << endl;
+                limit +=500000;
+            }
+            continue;
         }
-
+        abort=0;
+        limit = 500000;
         cout << endl << "Found nonce: " << foundNonce << endl;
         cout << "Hash: " << hash << endl;
 
+        blockchain.addBlock(blockTransactions, version, difficulty,nonce,hash);
+        for (const Transaction& tx : blockTransactions) {
+            for (User& user : users) {
+                if (user.getKey() == tx.getSiunt()) {
+                    user.changeBalance(-tx.getKiek());
+                }
+                if (user.getKey() == tx.getGav()) {
+                    user.changeBalance(tx.getKiek());
+                }
+            }
+        }
+        transactions.erase(transactions.begin(), transactions.begin() + kiekis);
+
+        cout << "Blockchain size: " << blockchain.size() << endl;
+        cout << "Remaining transactions: " << transactions.size() << endl;
     }
+    blockchain.printChain();
+    blockchain[50].printBlockInfo();
+    blockchain[50][10].printTransaction();
 
 
  return 0;
