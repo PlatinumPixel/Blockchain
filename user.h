@@ -7,7 +7,7 @@ class User {
     private:
       string vardas;
       string key;
-      int balance;
+      long long int balance;
       
     public:
       User(const string& vardas,const string& key, const int& balance) : vardas(vardas), key(key), balance(balance) {} 

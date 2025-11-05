@@ -7,7 +7,7 @@ class Transaction {
     private:
       string siuntejas;
       string gavejas;
-      int kiekis;
+      long long kiekis;
       string id;
       
     public:
