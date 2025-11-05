@@ -19,6 +19,8 @@ int main(){
         int chainsize = blockchain.size();
         int kiekis = std::min(100, int(transactions.size()));
         vector<Transaction> blockTransactions(transactions.begin(), transactions.begin() + kiekis);
+        
+        transactions=VerifyTransactions(transactions, users);
         string previousHash = blockchain.getLatestBlock().getHash();
 
         string transactionhash;
