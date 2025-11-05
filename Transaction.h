@@ -94,6 +94,33 @@ vector<Transaction> VerifyTransactions(vector<Transaction>& transactions, vector
     return verified;
 }
 
+
+inline std::string computeMerkleRoot(const std::vector<Transaction>& txs) {
+    if (txs.empty()) {
+        return hashing(std::string());
+    }
+
+    std::vector<std::string> layer;
+    layer.reserve(txs.size());
+    for (const auto &tx : txs) layer.push_back(tx.getId());
+
+    while (layer.size() > 1) {
+        std::vector<std::string> next;
+        next.reserve((layer.size() + 1) / 2);
+
+        for (size_t i = 0; i < layer.size(); i += 2) {
+            if (i + 1 < layer.size()) {
+                next.push_back(hashing(layer[i] + layer[i+1]));
+            } else {
+                next.push_back(hashing(layer[i] + layer[i]));
+            }
+        }
+        layer.swap(next);
+    }
+
+    return layer.front();
+}
+
 void printTransactions(const vector <Transaction>& transactions){
     cout << "Transactions-------------:" << endl;
     cout << std::left<<std::setw(20) << std::setfill(' ') << "Siuntejas" << std::setw(20) << "Gavejas" << std::setw(15) << "Kiekis" << std::setw(70) << "ID" << endl;

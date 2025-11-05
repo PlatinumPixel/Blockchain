@@ -11,6 +11,7 @@ int main(){
     printUsers(users, 50);
     vector <Transaction> transactions = GeneruotiTransactions(users,10000);
     printTransactions(transactions, 100);
+    transactions = VerifyTransactions(transactions, users);
 
     Blockchain blockchain;
     long limit = 500000;
@@ -19,8 +20,6 @@ int main(){
         int chainsize = blockchain.size();
         int kiekis = std::min(100, int(transactions.size()));
         vector<Transaction> blockTransactions(transactions.begin(), transactions.begin() + kiekis);
-        
-        transactions=VerifyTransactions(transactions, users);
         string previousHash = blockchain.getLatestBlock().getHash();
 
         string transactionhash;
@@ -69,16 +68,6 @@ int main(){
         cout << "Hash: " << hash << endl;
 
         blockchain.addBlock(blockTransactions, version, difficulty,nonce,hash);
-        for (const Transaction& tx : blockTransactions) {
-            for (User& user : users) {
-                if (user.getKey() == tx.getSiunt()) {
-                    user.changeBalance(-tx.getKiek());
-                }
-                if (user.getKey() == tx.getGav()) {
-                    user.changeBalance(tx.getKiek());
-                }
-            }
-        }
         transactions.erase(transactions.begin(), transactions.begin() + kiekis);
 
         cout << "Blockchain size: " << blockchain.size() << endl;
