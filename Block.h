@@ -25,6 +25,7 @@ class Block {
       string getHash() const { return hash; };
       int getIndex() const { return index; };
       void printBlockInfo() const {
+          cout << "Block Info-------------:" << endl;
           cout << "Block Index: " << index << endl;
           cout << "Previous Hash: " << previousHash << endl;
           cout << "Timestamp: " << std::asctime(std::localtime(&timestamp));

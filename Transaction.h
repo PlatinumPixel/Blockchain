@@ -20,6 +20,7 @@ class Transaction {
       int getKiek() const {return kiekis;}
       string getId() const {return id;}
       void printTransaction() const {
+          cout << "Transaction-------------:" << endl;
           cout << "Siuntejas: " << siuntejas << ", Gavejas: " << gavejas << ", Kiekis: " << kiekis << ", ID: " << id << endl;
       }
 
