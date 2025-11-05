@@ -34,8 +34,8 @@ int main(){
         long nonce = 0;
         long foundNonce = 0;
         string hash;
-
-        string headerNonceless = previousHash + std::to_string(std::time(nullptr)) + std::to_string(version) + transactionhash + std::to_string(difficulty);
+        string merkleRoot = computeMerkleRoot(blockTransactions);
+        string headerNonceless = previousHash + std::to_string(std::time(nullptr)) + std::to_string(version) + transactionhash + std::to_string(difficulty)+merkleRoot;
 
 
         // Try nonces until we find a hash that starts with the required number of '0' hex chars
@@ -46,7 +46,7 @@ int main(){
                 foundNonce = nonce;
                 break;
             }
-            if (nonce % 100000 == 0) cout << "\r" << "Mining block... Nonce: " << nonce << " Hash: " << hash << std::flush;
+            if (nonce % 100000 == 0) cout << "\r" << "Mining block... Nonce: " << nonce <<  std::flush;
             if (nonce > limit){
                 cout << endl << "Mining aborted after 500,000 nonces. Taking new transactions" << endl;
                 break;
@@ -67,7 +67,7 @@ int main(){
         cout << endl << "Found nonce: " << foundNonce << endl;
         cout << "Hash: " << hash << endl;
 
-        blockchain.addBlock(blockTransactions, version, difficulty,nonce,hash);
+        blockchain.addBlock(blockTransactions, version, difficulty,nonce,hash, merkleRoot);
         transactions.erase(transactions.begin(), transactions.begin() + kiekis);
 
         cout << "Blockchain size: " << blockchain.size() << endl;
