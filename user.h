@@ -17,7 +17,7 @@ class User {
       int getBalance() const {return balance;}
 
       void setBalance(int& bal) {balance = bal;}
-      void changeBalance(int& kiekis) {balance += kiekis;}
+      void changeBalance(int kiekis) {balance += kiekis;}
 
       void printUser() const {
           cout << "Vardas: " << vardas << ", Key: " << key << ", Balance: " << balance << endl;
@@ -50,6 +50,22 @@ void printUsers(const vector <User>& users){
     rf << std::left<<std::setw(15) << std::setfill(' ') << "Naudotojai" << std::setw(15) << "Raktas" << std::setw(15) << "Balance" << endl;
 
     for (const User& user : users) {
+        cout <<  std::left <<std::setw(15) << user.getVard()<< std::setw(15) << user.getKey()<< std::setw(15) << user.getBalance() << endl;
+        rf <<  std::left <<std::setw(15) << user.getVard()<< std::setw(15) << user.getKey()<< std::setw(15) << user.getBalance() << endl;
+    }
+}
+
+void printUsers(const vector <User>& users, int n){
+    std::ofstream rf ("users.txt");
+    cout << "Sugeneruoti users-------------:" << endl;
+    rf << "Sugeneruoti users-------------:" << endl;
+
+    cout << std::left<<std::setw(15) << std::setfill(' ') << "Naudotojai" << std::setw(15) << "Raktas" << std::setw(15) << "Balance" << endl;
+    rf << std::left<<std::setw(15) << std::setfill(' ') << "Naudotojai" << std::setw(15) << "Raktas" << std::setw(15) << "Balance" << endl;
+    int count = 0;
+    for (const User& user : users) {
+        if (count >= n) break;
+        count++;
         cout <<  std::left <<std::setw(15) << user.getVard()<< std::setw(15) << user.getKey()<< std::setw(15) << user.getBalance() << endl;
         rf <<  std::left <<std::setw(15) << user.getVard()<< std::setw(15) << user.getKey()<< std::setw(15) << user.getBalance() << endl;
     }
