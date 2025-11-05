@@ -8,7 +8,6 @@
 #include "Transaction.h"
 #include "Block.h"
 #include "Blockchain.h"
-#include "Functions.h"
 
 string hashing(string );
 vector <User> GeneruotiUsers(int );
