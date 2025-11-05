@@ -1,6 +1,9 @@
+# ifndef HASH_H
+# define HASH_H
+
 #include "bibl.h" 
 
-string hashing(string& input){
+string hashing(string input){
 
     int val[64];
     int j=1;
@@ -23,6 +26,7 @@ string hashing(string& input){
     }
     return hashed.str();
 }
+
 void salt(string &input){
 
     const string CHARACTERS = "{|}~`_^]@?>=<;:.-,+*)('&%$#![";
@@ -36,3 +40,5 @@ void salt(string &input){
             input  += CHARACTERS[distribution(generator)];
         }
 }
+
+  # endif

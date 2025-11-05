@@ -12,19 +12,12 @@ class Block {
       time_t timestamp;
       float version;
       string hash;
-      long int nonce;
+      long nonce;
       int difficulty;
 
-
-      
     public:
       
-      
-      string getSiunt() const {return siuntejas;}
-      string getGav() const {return gavejas;}
-      float getKiek() const {return kiekis;}
-      string getId() const {return id;}
-
+    
   };
 
   # endif
