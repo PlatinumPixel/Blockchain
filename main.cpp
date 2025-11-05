@@ -86,6 +86,8 @@ int main(){
     blockchain[50].printBlockInfo();
     blockchain[50][10].printTransaction();
 
+    printUsers(users, 100);
+
 
  return 0;
 }
