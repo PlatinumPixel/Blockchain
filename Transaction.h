@@ -1,5 +1,5 @@
-# ifndef Transaction_H
-# define Transaction_H
+# ifndef TRANSACTION_H
+# define TRANSACTION_H
 
 #include "std.h"
 #include "bibl.h"

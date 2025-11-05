@@ -9,14 +9,12 @@ string hashing(string& input){
     if (size < 64){    
         for (int i=1;i<64;i++){
             val[i%64]=(input[i%size]*val[(i-1)%64]+input[(i-1)%size])%1000/10%16;
-            if (val[i]==val[i-1]) val[i]=(val[i]+1)%16;
             
         }
     }
     else {   
         for (int i=1;i<size;i++){
             val[i%64]=(input[i]*val[(i-1)%64]+input[i-1])%1000/10%16;
-            if (val[i%64]==val[(i-1)%64]) val[i%64]=(val[i%64]+1)%16;
         }
     }
     stringstream hashed;

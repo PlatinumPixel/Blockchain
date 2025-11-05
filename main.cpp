@@ -1,5 +1,7 @@
 #include "bibl.h"
 #define UNICODE
+
+int difficulty = 3;
 vector <string> I;
 vector <string> O;
 
